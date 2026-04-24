@@ -3,128 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorkFlex | Professional Edition</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Weekly Work Tracker</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .day-btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); -webkit-tap-highlight-color: transparent; }
-        .day-btn:active { transform: scale(0.9); }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
-        .emerald-pop { background-color: #059669; color: white; border-color: #047857; box-shadow: 0 4px 12px -2px rgba(5, 150, 105, 0.3); }
-        .rose-pop { background-color: #fff1f2; color: #e11d48; border-color: #fecdd3; }
-        .leave-pop { background-color: #f8fafc; color: #94a3b8; border-color: #e2e8f0; border-style: dashed; }
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background-color: #f4f4f9; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        .day-row { display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
+        .day-row:last-child { border-bottom: none; }
+        .day-name { font-weight: bold; width: 100px; }
+        input[type="checkbox"] { transform: scale(1.5); cursor: pointer; }
+        .notes { font-size: 0.9em; color: #666; font-style: italic; }
     </style>
 </head>
-<body class="bg-[#f3f4f6] text-slate-900 pb-12">
+<body>
 
-    <div class="sticky top-0 glass border-b border-emerald-100 z-50">
-        <div class="max-w-md mx-auto px-6 py-3 flex justify-between items-center">
-            <h1 class="text-sm font-900 tracking-tighter text-emerald-900 italic">WORK<span class="text-rose-500">FLEX</span></h1>
-            <div class="flex gap-4">
-                <div class="flex items-center gap-1.5">
-                    <div class="w-3 h-3 rounded-full bg-[#059669]"></div>
-                    <span class="text-[10px] font-bold text-emerald-950 uppercase">Office</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <div class="w-3 h-3 rounded-full bg-rose-400"></div>
-                    <span class="text-[10px] font-bold text-rose-900 uppercase">WFH</span>
-                </div>
-            </div>
-        </div>
+<div class="container">
+    <h1>Weekly Tracker</h1>
+    
+    <div class="day-row">
+        <span class="day-name">Monday</span>
+        <span class="notes">Tasks for today...</span>
+        <input type="checkbox">
     </div>
 
-    <div class="max-w-md mx-auto px-4 mt-6 space-y-8" id="container">
-        </div>
+    <div class="day-row">
+        <span class="day-name">Tuesday</span>
+        <span class="notes">Keep it going!</span>
+        <input type="checkbox">
+    </div>
 
-    <script>
-        const states = ['WFH', 'OFFICE', 'LEAVE'];
-        const START_DATE = new Date(2026, 2, 30); // Mon, 30 March 2026
+    <div class="day-row">
+        <span class="day-name">Wednesday</span>
+        <span class="notes">Hump day</span>
+        <input type="checkbox">
+    </div>
 
-        function generateData() {
-            const periods = [];
-            let currentPointer = new Date(START_DATE);
-            for (let i = 0; i < 10; i++) {
-                const blockStart = new Date(currentPointer);
-                const blockEnd = new Date(currentPointer);
-                blockEnd.setDate(blockEnd.getDate() + 25);
-                periods.push({
-                    id: i,
-                    range: `${blockStart.getDate()} ${blockStart.toLocaleDateString('en-GB', {month:'short'})} — ${blockEnd.getDate()} ${blockEnd.toLocaleDateString('en-GB', {month:'short'})}`,
-                    baseDate: blockStart.toISOString(),
-                    days: Array(20).fill('WFH')
-                });
-                currentPointer.setDate(currentPointer.getDate() + 28);
-            }
-            return periods;
-        }
+    <div class="day-row">
+        <span class="day-name">Thursday</span>
+        <span class="notes">Almost there</span>
+        <input type="checkbox">
+    </div>
 
-        let appData = JSON.parse(localStorage.getItem('workflex_pro_pop')) || generateData();
+    <div class="day-row">
+        <span class="day-name">Friday</span>
+        <span class="notes">Finish strong</span>
+        <input type="checkbox">
+    </div>
 
-        function toggleDay(pIdx, dIdx) {
-            const current = appData[pIdx].days[dIdx];
-            appData[pIdx].days[dIdx] = states[(states.indexOf(current) + 1) % states.length];
-            localStorage.setItem('workflex_pro_pop', JSON.stringify(appData));
-            render();
-        }
+    <div class="day-row" style="color: #007bff;">
+        <span class="day-name">Saturday</span>
+        <span class="notes">Weekend mode</span>
+        <input type="checkbox">
+    </div>
 
-        function render() {
-            const container = document.getElementById('container');
-            container.innerHTML = '';
+    <div class="day-row" style="color: #007bff;">
+        <span class="day-name">Sunday</span>
+        <span class="notes">Prepare for next week</span>
+        <input type="checkbox">
+    </div>
+</div>
 
-            appData.forEach((period, pIdx) => {
-                const workingDays = period.days.filter(d => d !== 'LEAVE').length;
-                const officeCount = period.days.filter(d => d === 'OFFICE').length;
-                const req = Math.ceil(workingDays * 0.6);
-                const pct = workingDays > 0 ? Math.round((officeCount / workingDays) * 100) : 0;
-                const isSafe = pct >= 60;
-
-                const card = document.createElement('div');
-                card.className = "bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/60 border border-white overflow-hidden";
-                
-                let gridHtml = '';
-                const base = new Date(period.baseDate);
-
-                period.days.forEach((status, dIdx) => {
-                    const offset = Math.floor(dIdx / 5) * 7 + (dIdx % 5);
-                    const d = new Date(base);
-                    d.setDate(d.getDate() + offset);
-
-                    let popClass = "rose-pop";
-                    let label = "WFH";
-                    
-                    if(status === 'OFFICE') { popClass = "emerald-pop"; label = "OFFICE"; }
-                    if(status === 'LEAVE') { popClass = "leave-pop"; label = "LEAVE"; }
-
-                    gridHtml += `
-                        <button onclick="toggleDay(${pIdx}, ${dIdx})" class="day-btn h-16 rounded-[1.25rem] border-2 flex flex-col items-center justify-center ${popClass}">
-                            <span class="text-[10px] font-bold tracking-tighter opacity-80">${d.getDate()} ${d.toLocaleDateString('en-GB', {month:'short'})}</span>
-                            <span class="text-[11px] font-900 tracking-widest">${label.charAt(0)}</span>
-                        </button>
-                    `;
-                });
-
-                card.innerHTML = `
-                    <div class="px-7 py-5 flex justify-between items-center bg-slate-50/50 border-b border-slate-100">
-                        <div>
-                            <h2 class="text-[13px] font-900 text-slate-800 uppercase tracking-widest leading-none">${period.range}</h2>
-                            <p class="text-[10px] text-emerald-700 font-bold mt-1.5 uppercase tracking-tighter">Required: ${req} Days</p>
-                        </div>
-                        <div class="flex flex-col items-end">
-                            <div class="text-2xl font-900 leading-none ${isSafe ? 'text-emerald-600' : 'text-rose-500'}">${pct}%</div>
-                            <div class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest mt-1 ${isSafe ? 'bg-emerald-500 text-white' : 'bg-rose-100 text-rose-600'}">
-                                ${isSafe ? 'Compliant' : 'Low'}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-5 grid grid-cols-5 gap-3">
-                        ${gridHtml}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-        render();
-    </script>
 </body>
 </html>
+
