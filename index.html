@@ -1,34 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Work Tracker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Tracker Pro</title>
     <style>
-        body { font-family: sans-serif; padding: 40px; background-color: #f0f2f5; }
-        .card { background: white; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #333; }
-        .day { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
-        .today { background-color: #e7f3ff; font-weight: bold; color: #1877f2; border-radius: 5px; }
-        input[type="checkbox"] { width: 20px; height: 20px; }
+        :root {
+            --primary: #4f46e5;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+        }
+        body { 
+            font-family: 'Inter', system-ui, sans-serif; 
+            background-color: var(--bg); 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0; color: var(--text);
+        }
+        .container {
+            width: 90%; max-width: 450px;
+            background: var(--card); padding: 2rem;
+            border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; text-align: center; }
+        p { text-align: center; color: #64748b; margin-bottom: 2rem; font-size: 0.9rem; }
+        
+        .day-row {
+            display: flex; align-items: center;
+            padding: 1rem; margin-bottom: 0.75rem;
+            background: #f1f5f9; border-radius: 12px;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .day-row:hover { transform: scale(1.02); background: #e2e8f0; }
+        
+        .day-name { flex-grow: 1; font-weight: 600; }
+        
+        /* Highlight Today */
+        .is-today { 
+            background: #e0e7ff; border: 2px solid var(--primary); 
+            color: var(--primary);
+        }
+
+        input[type="checkbox"] {
+            width: 22px; height: 22px; cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .status-badge {
+            font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 0.05em; padding: 2px 8px;
+            border-radius: 99px; background: var(--primary);
+            color: white; margin-left: 10px; display: none;
+        }
+        .is-today .status-badge { display: inline-block; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>Weekly Tracker</h1>
-    <div class="day" id="d1">Monday <input type="checkbox"></div>
-    <div class="day" id="d2">Tuesday <input type="checkbox"></div>
-    <div class="day" id="d3">Wednesday <input type="checkbox"></div>
-    <div class="day" id="d4">Thursday <input type="checkbox"></div>
-    <div class="day" id="d5">Friday <input type="checkbox"></div>
-    <div class="day" id="d6">Saturday <input type="checkbox"></div>
-    <div class="day" id="d0">Sunday <input type="checkbox"></div>
+<div class="container">
+    <h1>Weekly Progress</h1>
+    <p>Track your consistency this week.</p>
+    
+    <div id="week-container">
+        <div class="day-row" id="day-1"><span class="day-name">Monday</span><span class="status-badge">Today</span><input type="checkbox"></div>
+        <div class="day-row" id="day-2"><span class="day-name">Tuesday</span><span class="status-badge">Today</span><input type="checkbox"></div>
+        <div class="day-row" id="day-3"><span class="day-name">Wednesday</span><span class="status-badge">Today</span><input type="checkbox"></div>
+        <div class="day-row" id="day-4"><span class="day-name">Thursday</span><span class="status-badge">Today</span><input type="checkbox"></div>
+        <div class="day-row" id="day-5"><span class="day-name">Friday</span><span class="status-badge">Today</span><input type="checkbox"></div>
+        <div class="day-row" id="day-6"><span class="day-name">Saturday</span><span class="status-badge">Today</span><input type="checkbox"></div>
+        <div class="day-row" id="day-0"><span class="day-name">Sunday</span><span class="status-badge">Today</span><input type="checkbox"></div>
+    </div>
 </div>
 
 <script>
-    // This part highlights today's day
-    const day = new Date().getDay();
-    document.getElementById('d' + day).classList.add('today');
+    // Highlight current day automatically
+    const today = new Date().getDay();
+    const activeRow = document.getElementById('day-' + today);
+    if (activeRow) activeRow.classList.add('is-today');
 </script>
 
 </body>
 </html>
+
