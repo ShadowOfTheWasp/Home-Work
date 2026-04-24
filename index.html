@@ -1,48 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work Tracker - Weekly Progress</title>
+    <title>My Work Tracker</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #eef2f3; padding: 20px; color: #333; }
-        .tracker-card { max-width: 500px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
-        
-        .day-list { list-style: none; padding: 0; }
-        .day-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #eee; transition: 0.3s; border-radius: 8px; }
-        .day-item:last-child { border-bottom: none; }
-        
-        /* Style for the current day of the week */
-        .today { background-color: #d1ecf1; border: 1px solid #bee5eb; font-weight: bold; }
-        .today::after { content: " (Today)"; font-size: 0.8em; color: #0c5460; margin-left: 10px; }
-
-        .day-label { flex-grow: 1; font-size: 1.1em; }
-        input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
+        body { font-family: sans-serif; padding: 40px; background-color: #f0f2f5; }
+        .card { background: white; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; }
+        .day { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
+        .today { background-color: #e7f3ff; font-weight: bold; color: #1877f2; border-radius: 5px; }
+        input[type="checkbox"] { width: 20px; height: 20px; }
     </style>
 </head>
 <body>
 
-<div class="tracker-card">
-    <h2>Weekly Progress</h2>
-    <ul class="day-list" id="weekList">
-        <li class="day-item" id="day-1"><span class="day-label">Monday</span><input type="checkbox"></li>
-        <li class="day-item" id="day-2"><span class="day-label">Tuesday</span><input type="checkbox"></li>
-        <li class="day-item" id="day-3"><span class="day-label">Wednesday</span><input type="checkbox"></li>
-        <li class="day-item" id="day-4"><span class="day-label">Thursday</span><input type="checkbox"></li>
-        <li class="day-item" id="day-5"><span class="day-label">Friday</span><input type="checkbox"></li>
-        <li class="day-item" id="day-6"><span class="day-label">Saturday</span><input type="checkbox"></li>
-        <li class="day-item" id="day-0"><span class="day-label">Sunday</span><input type="checkbox"></li>
-    </ul>
+<div class="card">
+    <h1>Weekly Tracker</h1>
+    <div class="day" id="d1">Monday <input type="checkbox"></div>
+    <div class="day" id="d2">Tuesday <input type="checkbox"></div>
+    <div class="day" id="d3">Wednesday <input type="checkbox"></div>
+    <div class="day" id="d4">Thursday <input type="checkbox"></div>
+    <div class="day" id="d5">Friday <input type="checkbox"></div>
+    <div class="day" id="d6">Saturday <input type="checkbox"></div>
+    <div class="day" id="d0">Sunday <input type="checkbox"></div>
 </div>
 
 <script>
-    // This script automatically finds the current day and highlights it
-    const today = new Date().getDay(); // 0 is Sunday, 1 is Monday, etc.
-    const currentDayElement = document.getElementById('day-' + today);
-    if (currentDayElement) {
-        currentDayElement.classList.add('today');
-    }
+    // This part highlights today's day
+    const day = new Date().getDay();
+    document.getElementById('d' + day).classList.add('today');
 </script>
 
 </body>
