@@ -6,63 +6,77 @@
     <title>Work Tracker</title>
     <style>
         :root {
-            --coral: #FF7F50;
-            --turquoise: #40E0D0;
-            --pink: #FF69B4;
-            --bg: #fff5f8;
+            --primary: #4f46e5; /* The purple/blue from your screenshot */
+            --bg: #f8fafc;
+            --card: #ffffff;
         }
         body { 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Inter', system-ui, sans-serif; 
             background-color: var(--bg); 
-            padding: 20px; display: flex; justify-content: center;
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0;
         }
         .container {
-            width: 100%; max-width: 450px;
-            background: white; padding: 2rem;
-            border-radius: 20px; 
-            border: 4px solid var(--turquoise);
-            box-shadow: 12px 12px 0px var(--pink);
+            width: 90%; max-width: 450px;
+            background: var(--card); padding: 2rem;
+            border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
-        h2 { text-align: center; color: var(--coral); text-transform: uppercase; letter-spacing: 2px; }
+        h1 { font-size: 1.5rem; text-align: center; color: #1e293b; }
         
         .day-row {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 15px 10px; border-bottom: 2px solid #fff0f5;
+            padding: 1rem; margin-bottom: 0.75rem;
+            background: #f1f5f9; border-radius: 12px;
+            border: 1px solid transparent;
         }
-        .day-name { font-weight: bold; color: #444; width: 100px; }
         
+        /* The "Today" Highlight from your screenshot */
+        .is-today { 
+            background: #e0e7ff; 
+            border: 2px solid var(--primary); 
+            color: var(--primary);
+        }
+
+        .day-name { font-weight: 600; }
+
+        /* Making the dropdown look like a clean button */
         select {
-            padding: 10px; border-radius: 10px;
-            border: 2px solid var(--coral);
-            background: white; font-weight: bold;
-            outline: none; width: 140px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
         }
-        
-        /* Highlight Today */
-        .today-style { background: #e0fffb; border-radius: 12px; border-left: 6px solid var(--turquoise); }
+
+        /* The colors you asked for (Coral, Turquoise, Pink) applied to the buttons/text */
+        h1 { color: #FF7F50; } /* Coral */
+        .is-today { border-color: #40E0D0; color: #40E0D0; } /* Turquoise */
+        select { border-color: #FF69B4; } /* Pink */
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Work Tracker</h2>
-    <div id="tracker">
-        <div class="day-row" id="d-1"><span class="day-name">Monday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="d-2"><span class="day-name">Tuesday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="d-3"><span class="day-name">Wednesday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="d-4"><span class="day-name">Thursday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="d-5"><span class="day-name">Friday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="d-6"><span class="day-name">Saturday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="d-0"><span class="day-name">Sunday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
+    <h1>Weekly Progress</h1>
+    <div id="week-container">
+        <div class="day-row" id="day-1"><span class="day-name">Monday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
+        <div class="day-row" id="day-2"><span class="day-name">Tuesday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
+        <div class="day-row" id="day-3"><span class="day-name">Wednesday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
+        <div class="day-row" id="day-4"><span class="day-name">Thursday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
+        <div class="day-row" id="day-5"><span class="day-name">Friday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
+        <div class="day-row" id="day-6"><span class="day-name">Saturday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
+        <div class="day-row" id="day-0"><span class="day-name">Sunday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
     </div>
 </div>
 
 <script>
-    const day = new Date().getDay();
-    const active = document.getElementById('d-' + day);
-    if(active) active.classList.add('today-style');
+    const today = new Date().getDay();
+    const activeRow = document.getElementById('day-' + today);
+    if (activeRow) activeRow.classList.add('is-today');
 </script>
 
 </body>
 </html>
-
