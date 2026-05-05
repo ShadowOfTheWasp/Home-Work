@@ -1,82 +1,226 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<html <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work Tracker</title>
+    <title>Office Tracker 60%</title>
     <style>
         :root {
-            --primary: #4f46e5; /* The purple/blue from your screenshot */
-            --bg: #f8fafc;
-            --card: #ffffff;
+            --bg-color: #f2f2f7;
+            --card-bg: #ffffff;
+            --office-color: #007aff;
+            --home-color: #34c759;
+            --away-color: #8e8e93;
+            --text-main: #1c1c1e;
+            --border-radius: 12px;
         }
-        body { 
-            font-family: 'Inter', system-ui, sans-serif; 
-            background-color: var(--bg); 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; margin: 0;
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
         }
+
         .container {
-            width: 90%; max-width: 450px;
-            background: var(--card); padding: 2rem;
-            border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-        h1 { font-size: 1.5rem; text-align: center; color: #1e293b; }
-        
-        .day-row {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 1rem; margin-bottom: 0.75rem;
-            background: #f1f5f9; border-radius: 12px;
-            border: 1px solid transparent;
-        }
-        
-        /* The "Today" Highlight from your screenshot */
-        .is-today { 
-            background: #e0e7ff; 
-            border: 2px solid var(--primary); 
-            color: var(--primary);
+            width: 100%;
+            max-width: 500px;
         }
 
-        .day-name { font-weight: 600; }
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
 
-        /* Making the dropdown look like a clean button */
-        select {
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            background: white;
-            font-weight: 500;
+        .stats-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 8px solid #e5e5ea;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .stats-circle.met { border-color: var(--home-color); }
+        .stats-circle.not-met { border-color: #ff3b30; }
+
+        .percentage { font-size: 28px; font-weight: bold; }
+        .label { font-size: 12px; color: var(--away-color); text-transform: uppercase; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .week-label {
+            grid-column: span 5;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 15px 0 5px;
+            color: var(--away-color);
+        }
+
+        .day-card {
+            background: var(--card-bg);
+            aspect-ratio: 1 / 1;
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            outline: none;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            user-select: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
         }
 
-        /* The colors you asked for (Coral, Turquoise, Pink) applied to the buttons/text */
-        h1 { color: #FF7F50; } /* Coral */
-        .is-today { border-color: #40E0D0; color: #40E0D0; } /* Turquoise */
-        select { border-color: #FF69B4; } /* Pink */
+        .day-card:active { transform: scale(0.95); }
 
+        .day-name { font-size: 10px; font-weight: bold; margin-bottom: 4px; }
+        .status-icon { font-size: 18px; }
+
+        /* Status Styles */
+        .status-O { background-color: var(--office-color); color: white; }
+        .status-H { background-color: var(--home-color); color: white; }
+        .status-X { background-color: #e5e5ea; color: var(--away-color); }
+
+        .legend {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-around;
+            font-size: 12px;
+        }
+
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+        footer { text-align: center; margin-top: 20px; font-size: 12px; color: var(--away-color); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Weekly Progress</h1>
-    <div id="week-container">
-        <div class="day-row" id="day-1"><span class="day-name">Monday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="day-2"><span class="day-name">Tuesday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="day-3"><span class="day-name">Wednesday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="day-4"><span class="day-name">Thursday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="day-5"><span class="day-name">Friday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="day-6"><span class="day-name">Saturday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
-        <div class="day-row" id="day-0"><span class="day-name">Sunday</span><select><option>Select...</option><option>Office</option><option>Home</option><option>Leave</option></select></div>
+    <header>
+        <div id="statusCircle" class="stats-circle">
+            <div class="percentage" id="percentDisplay">0%</div>
+            <div class="label" id="targetLabel">of 60%</div>
+        </div>
+        <div id="summaryText" style="font-weight: 500;">Fill in your schedule</div>
+    </header>
+
+    <div class="grid" id="calendarGrid">
+        <!-- JS will populate days here -->
     </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="dot" style="background: var(--office-color)"></div> Office</div>
+        <div class="legend-item"><div class="dot" style="background: var(--home-color)"></div> Home</div>
+        <div class="legend-item"><div class="dot" style="background: #e5e5ea"></div> Off/Holiday</div>
+    </div>
+
+    <footer>
+        Data saved automatically to your device.
+        <br><button onclick="resetData()" style="margin-top:10px; border:none; background:none; color:#ff3b30; cursor:pointer;">Reset All</button>
+    </footer>
 </div>
 
 <script>
-    const today = new Date().getDay();
-    const activeRow = document.getElementById('day-' + today);
-    if (activeRow) activeRow.classList.add('is-today');
+    const grid = document.getElementById('calendarGrid');
+    const percentDisplay = document.getElementById('percentDisplay');
+    const statusCircle = document.getElementById('statusCircle');
+    const summaryText = document.getElementById('summaryText');
+    
+    const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+    const STATUS_CYCLE = ['H', 'O', 'X']; // Home -> Office -> Away
+    const STATUS_MAP = {
+        'H': { label: '🏠', class: 'status-H' },
+        'O': { label: '🏢', class: 'status-O' },
+        'X': { label: '🌴', class: 'status-X' }
+    };
+
+    // Load or Initialize Data
+    let userSchedule = JSON.parse(localStorage.getItem('officeTrackerData')) || Array(20).fill('H');
+
+    function init() {
+        grid.innerHTML = '';
+        for (let w = 0; w < 4; w++) {
+            const label = document.createElement('div');
+            label.className = 'week-label';
+            label.innerText = `WEEK ${w + 1}`;
+            grid.appendChild(label);
+
+            for (let d = 0; d < 5; d++) {
+                const index = (w * 5) + d;
+                const status = userSchedule[index];
+                
+                const card = document.createElement('div');
+                card.className = `day-card ${STATUS_MAP[status].class}`;
+                card.innerHTML = `
+                    <div class="day-name">${DAYS[d]}</div>
+                    <div class="status-icon">${STATUS_MAP[status].label}</div>
+                `;
+                
+                card.onclick = () => toggleDay(index);
+                grid.appendChild(card);
+            }
+        }
+        calculate();
+    }
+
+    function toggleDay(index) {
+        let currentStatus = userSchedule[index];
+        let nextIndex = (STATUS_CYCLE.indexOf(currentStatus) + 1) % STATUS_CYCLE.length;
+        userSchedule[index] = STATUS_CYCLE[nextIndex];
+        
+        saveAndRefresh();
+    }
+
+    function calculate() {
+        const officeDays = userSchedule.filter(s => s === 'O').length;
+        const workDays = userSchedule.filter(s => s !== 'X').length;
+        
+        const percentage = workDays > 0 ? Math.round((officeDays / workDays) * 100) : 0;
+        
+        percentDisplay.innerText = `${percentage}%`;
+        
+        if (percentage >= 60) {
+            statusCircle.className = 'stats-circle met';
+            summaryText.innerText = "Target Achieved! 🎉";
+        } else {
+            statusCircle.className = 'stats-circle not-met';
+            const needed = Math.ceil(0.6 * workDays) - officeDays;
+            summaryText.innerText = `Need ${needed} more office day${needed > 1 ? 's' : ''}`;
+        }
+    }
+
+    function saveAndRefresh() {
+        localStorage.setItem('officeTrackerData', JSON.stringify(userSchedule));
+        init();
+    }
+
+    function resetData() {
+        if(confirm("Are you sure you want to clear all data?")) {
+            userSchedule = Array(20).fill('H');
+            saveAndRefresh();
+        }
+    }
+
+    init();
 </script>
 
 </body>
 </html>
+
